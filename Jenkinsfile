@@ -15,7 +15,7 @@ pipeline {
             }
             steps {
                 script {
-                    app = docker.build("hsuyiyang/react-app")
+                    app = docker.build("yiyanghsu/react-app")
                     app.inside {
                         sh 'echo $(curl localhost:1233)'
                     }
@@ -28,7 +28,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_login') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'yiyanghsu') {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
@@ -41,14 +41,14 @@ pipeline {
             }
             steps {
                     script {
-                        sh "docker pull hsuyiyang/react-app:${env.BUILD_NUMBER}"
+                        sh "docker pull yiyanghsu/react-app:${env.BUILD_NUMBER}"
                         try {
                             sh "docker stop react-app"
                             sh "docker rm react-app"
                         } catch (err) {
                             echo: 'caught error: $err'
                         }
-                        sh "docker run --restart always --name react-app -p 1233:80 -d hsuyiyang/react-app:${env.BUILD_NUMBER}"
+                        sh "docker run --restart always --name react-app -p 1233:80 -d yiyanghsu/react-app:${env.BUILD_NUMBER}"
                     }
             }
         }
@@ -87,7 +87,7 @@ pipeline {
                         } catch (err) {
                             echo: 'caught error: $err'
                         }
-                        sh "docker run --restart always --name react-app -p 1233:80 -d hsuyiyang/react-app:${env.BUILD_NUMBER}"
+                        sh "docker run --restart always --name react-app -p 1233:80 -d yiyanghsu/react-app:${env.BUILD_NUMBER}"
                     }
             }
         }
